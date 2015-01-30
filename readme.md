@@ -3,7 +3,7 @@
 > Async (with callback api) check through github api if branch exists in the `user/repo`, you can use `user/repo[#branch]` for the check
 
 ## Install
-```bash
+```
 npm i --save online-branch-exist
 npm test
 ```
@@ -14,10 +14,16 @@ npm test
 
 ```js
 var onlineBranchExist = require('online-branch-exist');
+
+onlineBranchExist('tunnckoCore/koa-better-body#master', function(err, res) {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  console.log(res);
+  //=> true
+})
 ```
-
-
-## API / CLI
 
 
 ## Author
