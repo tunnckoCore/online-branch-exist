@@ -9,13 +9,64 @@ npm test
 ```
 
 
-## Usage
+## API
 > For more use-cases see the [tests](./test.js)
 
-```js
-var onlineBranchExist = require('online-branch-exist');
+### [onlineBranchExist](./index.js#L22)
+> Checks that given `branch` exists in github repo, using `user/repo#branch` string pattern
 
-onlineBranchExist('tunnckoCore/koa-better-body#master', function(err, res) {
+- `pattern` **{String}**
+- `callback` **{Function}**
+
+**Example:**
+
+```js
+var onlineExist = require('online-branch-exist');
+
+onlineExist('tunnckoCore/koa-better-body#master', function(err, res) {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  console.log(res);
+  //=> true
+})
+```
+
+### [.branch](./index.js#L22)
+> Checks that given `branch` exists in github repo, using `user/repo#branch` string pattern  
+> Actually same as above.
+
+- `pattern` **{String}**
+- `callback` **{Function}**
+
+**Example:**
+
+```js
+var onlineExist = require('online-branch-exist');
+
+onlineExist.branch('koajs/koa#proxy', function(err, res) {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  console.log(res);
+  //=> true
+})
+```
+
+### [.tag](./index.js#L26)
+> Checks that given `tag` exists in github repo, using `user/repo#tag` string pattern
+
+- `pattern` **{String}**
+- `callback` **{Function}**
+
+**Example:**
+
+```js
+var onlineExist = require('online-branch-exist');
+
+onlineExist.tag('hybridables/handle-arguments#v2.0.0', function(err, res) {
   if (err) {
     console.error(err);
     return;
