@@ -10,7 +10,7 @@
 var fs = require('fs');
 var fmt = require('util').format;
 var got = require('got');
-var errs = require('handle-errors')('online-branch-exist', true);
+var errs = require('handle-errors')('online-branch-exist');
 var stringify = require('stringify-github-short-url');
 
 var endpoint = 'https://api.github.com/repos';
@@ -39,11 +39,6 @@ module.exports = function onlineBranchExist(pattern, callback) {
   }
 
   var parse = stringify.parse(pattern);
-
-  if (!parse.branch) {
-    errs.error('expect to have `branch` in the pattern', callback);
-    return;
-  }
 
   var url = fmt('%s/%s/%s/branches', endpoint, parse.user, parse.repo);
   got.get(url, function(err, res) {

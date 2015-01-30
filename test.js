@@ -9,7 +9,6 @@
 
 var assert = require('assert');
 var onlineBranchExist = require('./index');
-
 onlineBranchExist('tunnckoCore/koa-better-body#master', function(err, res) {
-  console.log(res);
-})
+-  console.log(res);
+-})
