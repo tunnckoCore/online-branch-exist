@@ -1,0 +1,35 @@
+{
+  "name": "online-branch-exist",
+  "version": "0.0.0",
+  "description": "Async (with callback api) check through github api if branch exists in the `user/repo`, you can use `user/repo[#branch]` for the check",
+  "scripts": {
+    "lint": "jshint index.js && jscs index.js --reporter inline",
+    "test": "mocha",
+    "test-cov": "istanbul cover _mocha",
+    "test-travis": "istanbul cover _mocha --report lcovonly"
+  },
+  "author": {
+    "name": "Charlike Make Reagent",
+    "email": "mameto_100@mail.bg",
+    "url": "https://github.com/tunnckoCore"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tunnckoCore/online-branch-exist.git"
+  },
+  "keywords": [],
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/tunnckoCore/online-branch-exist/blob/master/license.md"
+  },
+  "dependencies": {
+    "got": "^2.3.2",
+    "handle-errors": "^1.0.0",
+    "stringify-github-short-url": "^1.0.4"
+  },
+  "devDependencies": {
+    "istanbul-harmony": "^0.3.1",
+    "mocha": "*",
+    "mocha-lcov-reporter": "^0.0.1"
+  }
+}
