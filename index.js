@@ -15,13 +15,25 @@ var stringify = require('stringify-github-short-url');
 
 var endpoint = 'https://api.github.com/repos';
 
-module.exports = function onlineBranchExist(pattern, callback) {
+module.exports = onlineBranchExist;
+onlineBranchExist.tag = onlineTagExist;
+onlineBranchExist.branch = onlineBranchExist
+
+function onlineBranchExist(pattern, callback) {
+  core('branches', pattern, callback);
+}
+
+function onlineTagExist(pattern, callback) {
+  core('tags', pattern, callback);
+}
+
+function core(type, pattern, callback) {
   if (!pattern) {
     errs.error('should have `pattern` and be string');
   }
 
   if (!callback) {
-    errs.error('should have `callback` and be function')
+    errs.error('should have `callback` and be function');
   }
 
   if (typeof callback !== 'function') {
@@ -40,7 +52,7 @@ module.exports = function onlineBranchExist(pattern, callback) {
 
   var parse = stringify.parse(pattern);
 
-  var url = fmt('%s/%s/%s/branches', endpoint, parse.user, parse.repo);
+  var url = fmt('%s/%s/%s/%s', endpoint, parse.user, parse.repo, type);
   got.get(url, function(err, res) {
     if (err) {
       callback(err);
@@ -53,4 +65,4 @@ module.exports = function onlineBranchExist(pattern, callback) {
     });
     callback(null, data.length === 1 ? true : false);
   });
-};
+}
