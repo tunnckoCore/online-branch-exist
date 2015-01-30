@@ -50,9 +50,9 @@
     "url": "https://github.com/tunnckoCore/online-branch-exist/blob/master/license.md"
   },
   "dependencies": {
-    "got": "^2.3.2",
-    "handle-errors": "^1.0.0",
-    "stringify-github-short-url": "^1.0.4"
+    "got": "~2.3.2",
+    "handle-errors": "~1.0.0",
+    "stringify-github-short-url": "~1.0.4"
   },
   "devDependencies": {
     "istanbul-harmony": "^0.3.1",
