@@ -15,9 +15,20 @@ var stringify = require('stringify-github-short-url');
 
 var endpoint = 'https://api.github.com/repos';
 
-module.exports = onlineBranchExist;
-onlineBranchExist.tag = onlineTagExist;
-onlineBranchExist.branch = onlineBranchExist
+module.exports = onlineExist;
+
+function onlineExist(pattern, callback) {
+  onlineBranchExist(pattern, function(err, res) {
+    if (err || res === false) {
+      onlineTagExist(pattern, callback);
+      return;
+    }
+    callback(null, res);
+  });
+}
+
+onlineExist.tag = onlineTagExist;
+onlineExist.branch = onlineBranchExist
 
 function onlineBranchExist(pattern, callback) {
   core('branches', pattern, callback);
