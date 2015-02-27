@@ -98,20 +98,4 @@ describe('online-branch-exist:', function() {
       });
     });
   });
-  describe('should work properly, err be `null`, res be boolean', function() {
-    it('res should be `true`', function(done) {
-      onlineExist('tunnckoCore/koa-better-body#v1.0.3', function(err, res) {
-        assert.strictEqual(err, null);
-        assert.strictEqual(res, true);
-        done();
-      });
-    });
-    it('res should be `false`', function(done) {
-      onlineExist('tunnckoCore/koa-better-body#abcdefg', function(err, res) {
-        assert.strictEqual(err, null);
-        assert.strictEqual(res, false);
-        done();
-      });
-    });
-  });
 });
