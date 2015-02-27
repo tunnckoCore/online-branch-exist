@@ -1,6 +1,6 @@
 ## [![npm][npmjs-img]][npmjs-url] [![mit license][license-img]][license-url] [![build status][travis-img]][travis-url] [![coverage status][coveralls-img]][coveralls-url] [![deps status][daviddm-img]][daviddm-url]
 
-> Async (with callback api) check through github api if branch exists in the `user/repo`, you can use `user/repo[#branch]` for the check
+> Async (with callback api) check through github api if branch/tag/release exists in the `user/repo`, you can use `user/repo[#branch]` for the check
 
 ## Install
 ```
@@ -12,8 +12,8 @@ npm test
 ## API
 > For more use-cases see the [tests](./test.js)
 
-### [onlineBranchExist](./index.js#L22)
-> Checks that given `branch` exists in github repo, using `user/repo#branch` string pattern
+### [onlineBranch](./index.js#L20)
+> using `user/repo#branch` you can check if `tag` or `branch` exists
 
 - `pattern` **{String}**
 - `callback` **{Function}**
@@ -23,6 +23,9 @@ npm test
 ```js
 var onlineExist = require('online-branch-exist');
 
+// first will check if branch exists
+// if not exist, will check if tg which name `master` exists
+// at last if not exist will return `false`
 onlineExist('tunnckoCore/koa-better-body#master', function(err, res) {
   if (err) {
     console.error(err);
@@ -33,7 +36,7 @@ onlineExist('tunnckoCore/koa-better-body#master', function(err, res) {
 })
 ```
 
-### [.branch](./index.js#L22)
+### [.branch](./index.js#L33)
 > Checks that given `branch` exists in github repo, using `user/repo#branch` string pattern  
 > Actually same as above.
 
@@ -55,7 +58,7 @@ onlineExist.branch('koajs/koa#proxy', function(err, res) {
 })
 ```
 
-### [.tag](./index.js#L26)
+### [.tag](./index.js#L37)
 > Checks that given `tag` exists in github repo, using `user/repo#tag` string pattern
 
 - `pattern` **{String}**
@@ -116,4 +119,4 @@ Released under the [`MIT`][license-url] license.
 
 ***
 
-_Powered and automated by [kdf](https://github.com/tunnckoCore), January 30, 2015_
+_Powered and automated by [kdf](https://github.com/tunnckoCore), February 27, 2015_
