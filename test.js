@@ -11,6 +11,29 @@ var assert = require('assert');
 var onlineExist = require('./index');
 
 describe('online-branch-exist:', function() {
+  describe('should onlineExist(pattern, cb) check if `branch` exist then `tag`', function() {
+    it('should return `true` if branch exist', function(done) {
+      onlineExist('tunnckoCore/koa-better-body#master', function(err, res) {
+        assert.strictEqual(err, null);
+        assert.strictEqual(res, true);
+        done();
+      });
+    });
+    it('should return `true` if tag exist', function(done) {
+      onlineExist('tunnckoCore/koa-better-body#v1.0.16', function(err, res) {
+        assert.strictEqual(err, null);
+        assert.strictEqual(res, true);
+        done();
+      });
+    });
+    it('should return `false` if branch or tag not exists', function(done) {
+      onlineExist('tunnckoCore/koa-better-body#asfsdfdsf', function(err, res) {
+        assert.strictEqual(err, null);
+        assert.strictEqual(res, false);
+        done();
+      });
+    });
+  });
   describe('should have `.tag` and `.branch` methods', function() {
     it('should have `.tag` method', function(done) {
       onlineExist.tag('tunnckoCore/koa-better-body#v1.0.16', function(err, res) {
