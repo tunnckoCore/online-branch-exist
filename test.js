@@ -58,11 +58,25 @@ describe('online-branch-exist:', function() {
       assert.throws(fixture, Error);
       done();
     });
-    it('Error when no `callback`', function(done) {
+    it('Error when no `token` given or it is false/undefined/null', function(done) {
       function fixture() {
         onlineExist({some: true});
       }
-      assert.throws(fixture, Error);
+      assert.throws(fixture, /Github/);
+      done();
+    });
+    it('Error when `token` not a string or boolean true', function(done) {
+      function fixture() {
+        onlineExist({some: true}, 1234);
+      }
+      assert.throws(fixture, /token/);
+      done();
+    });
+    it('Error when no `callback` given', function(done) {
+      function fixture() {
+        onlineExist({some: true}, true);
+      }
+      assert.throws(fixture, /and be func/);
       done();
     });
     it('TypeError when `callback` not a function', function(done) {

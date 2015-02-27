@@ -47,6 +47,10 @@ function core(type, pattern, token, callback) {
     errs.error('should give Github Personal Access Token');
   }
 
+  if (token !== true && typeof token !== 'string') {
+    errs.type('expect `token` be string');
+  }
+
   if (!callback) {
     errs.error('should have `callback` and be function');
   }
@@ -57,11 +61,6 @@ function core(type, pattern, token, callback) {
 
   if (typeof pattern !== 'string') {
     errs.type('expect `pattern` be string', callback);
-    return;
-  }
-
-  if (token !== true && typeof token !== 'string') {
-    errs.type('expect `token` be string', callback);
     return;
   }
 
