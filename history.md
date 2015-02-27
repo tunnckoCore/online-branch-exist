@@ -1,5 +1,11 @@
 
 
+## v1.1.0 / February 27, 2015
+- Release v1.1.0 / npm@v1.1.0
+- bump deps
+- add new tests
+- little relogic, review [#3767d4](https://github.com/tunnckoCore/online-branch-exist/commit/3767d442da31325c6e3fbad03b531abbf51bbceb)
+
 ## v1.0.1 / January 30, 2015
 - Release v1.0.1 / npm@v1.0.1
 - update readme docs
