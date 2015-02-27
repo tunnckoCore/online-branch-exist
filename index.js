@@ -60,7 +60,7 @@ function core(type, pattern, token, callback) {
     return;
   }
 
-  if (typeof token !== 'string') {
+  if (token !== true && typeof token !== 'string') {
     errs.type('expect `token` be string', callback);
     return;
   }
@@ -70,7 +70,7 @@ function core(type, pattern, token, callback) {
     return;
   }
 
-  var opts = {
+  var opts = token === true ? undefined : {
     headers: {
       'Authorization': 'token ' + token
     }
