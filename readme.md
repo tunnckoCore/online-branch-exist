@@ -16,6 +16,7 @@ npm test
 > using `user/repo#branch` you can check if `tag` or `branch` exists
 
 - `pattern` **{String}**
+- `token` **{String|Boolean}** github personal access token, or `true` for public
 - `callback` **{Function}**
 
 **Example:**
@@ -41,6 +42,7 @@ onlineExist('tunnckoCore/koa-better-body#master', function(err, res) {
 > Actually same as above.
 
 - `pattern` **{String}**
+- `token` **{String|Boolean}** github personal access token, or `true` for public
 - `callback` **{Function}**
 
 **Example:**
@@ -62,6 +64,7 @@ onlineExist.branch('koajs/koa#proxy', function(err, res) {
 > Checks that given `tag` exists in github repo, using `user/repo#tag` string pattern
 
 - `pattern` **{String}**
+- `token` **{String|Boolean}** github personal access token, or `true` for public
 - `callback` **{Function}**
 
 **Example:**
