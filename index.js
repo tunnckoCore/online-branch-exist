@@ -17,10 +17,10 @@ var endpoint = 'https://api.github.com/repos';
 
 module.exports = onlineExist;
 
-function onlineExist(pattern, callback) {
-  onlineBranchExist(pattern, function(err, res) {
+function onlineExist(pattern, token, callback) {
+  onlineBranchExist(pattern, token, function(err, res) {
     if (err || res === false) {
-      onlineTagExist(pattern, callback);
+      onlineTagExist(pattern, token, callback);
       return;
     }
     callback(null, res);
@@ -30,17 +30,21 @@ function onlineExist(pattern, callback) {
 onlineExist.tag = onlineTagExist;
 onlineExist.branch = onlineBranchExist
 
-function onlineBranchExist(pattern, callback) {
-  core('branches', pattern, callback);
+function onlineBranchExist(pattern, token, callback) {
+  core('branches', pattern, token, callback);
 }
 
-function onlineTagExist(pattern, callback) {
-  core('tags', pattern, callback);
+function onlineTagExist(pattern, token, callback) {
+  core('tags', pattern, token, callback);
 }
 
-function core(type, pattern, callback) {
+function core(type, pattern, token, callback) {
   if (!pattern) {
     errs.error('should have `pattern` and be string');
+  }
+
+  if (!token) {
+    errs.error('should give Github Personal Access Token');
   }
 
   if (!callback) {
@@ -56,15 +60,25 @@ function core(type, pattern, callback) {
     return;
   }
 
+  if (typeof token !== 'string') {
+    errs.type('expect `token` be string', callback);
+    return;
+  }
+
   if (!stringify.regex().test(pattern)) {
     errs.error('expect `pattern` be `user/repo#branch`', callback);
     return;
   }
 
+  var opts = {
+    headers: {
+      'Authorization': 'token ' + token
+    }
+  };
   var parse = stringify.parse(pattern);
 
   var url = fmt('%s/%s/%s/%s', endpoint, parse.user, parse.repo, type);
-  got.get(url, function(err, res) {
+  got.get(url, opts, function(err, res) {
     if (err) {
       callback(err);
       return;
