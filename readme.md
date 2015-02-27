@@ -24,7 +24,7 @@ npm test
 var onlineExist = require('online-branch-exist');
 
 // first will check if branch exists
-// if not exist, will check if tg which name `master` exists
+// if not exist, will check if tag with name `master` exists
 // at last if not exist will return `false`
 onlineExist('tunnckoCore/koa-better-body#master', function(err, res) {
   if (err) {
