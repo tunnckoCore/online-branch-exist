@@ -2,9 +2,9 @@
   "maxerr"        : 10,
   "indent"        : 2,
 
-  "maxparams"     : 3,
+  "maxparams"     : 4,
   "maxdepth"      : 3,
-  "maxstatements" : 15,
+  "maxstatements" : 21,
   "maxlen"        : 120,
 
   "camelcase"     : true,
