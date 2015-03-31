@@ -69,24 +69,41 @@ function core(type, pattern, token, callback) {
     return;
   }
 
+  if (['branches', 'tags'].indexOf(type) == -1) {
+    errs.error('expect `type` be one of `branches` or `tags`');
+  }
+
   var opts = token === true ? undefined : {
     headers: {
       'Authorization': 'token ' + token
     }
   };
-  var parse = stringify.parse(pattern);
 
-  var url = fmt('%s/%s/%s/%s', endpoint, parse.user, parse.repo, type);
+  var parse = stringify.parse(pattern);
+  var url = '';
+
+  if (type == 'branches') {
+    url = fmt('%s/%s/%s/%s/%s', endpoint, parse.user, parse.repo, 'git/refs/heads', parse.branch);
+  } else if (type == 'tags') {
+    url = fmt('%s/%s/%s/%s/%s', endpoint, parse.user, parse.repo, 'git/refs/tags', parse.branch);
+  }
+
   got.get(url, opts, function(err, res) {
     if (err) {
-      callback(err);
-      return;
+      if (err.code == '404') {
+        callback(null, false);
+        return;
+      } else {
+        callback(err);
+        return;
+      }
     }
-    var data = JSON.parse(res).map(function(row) {
-      return row.name;
-    }).filter(function(name) {
-      return name === parse.branch;
-    });
-    callback(null, data.length === 1 ? true : false);
+    var data = JSON.parse(res);
+    if (data.ref && data.ref.indexOf(parse.branch) !== -1) {
+      callback(null, true);
+    } else {
+      callback(null, false);
+    }
+    return;
   });
 }
