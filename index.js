@@ -11,82 +11,114 @@ var fs = require('fs');
 var fmt = require('util').format;
 var got = require('got');
 var errs = require('handle-errors')('online-branch-exist');
-var stringify = require('stringify-github-short-url');
+var regex = require('github-short-url-regex')();
+var isObject = require('is-plain-object');
 
-var endpoint = 'https://api.github.com/repos';
+var endpoint = 'https://api.github.com/repos/';
+var format = '%s%s/%s/git/%s';
+var cache = {};
 
-module.exports = onlineExist;
+function onlineExist(pattern, opts, callback) {
+  var args = verify(pattern, opts, callback);
+  opts = args.opts;
+  callback = args.callback;
 
-function onlineExist(pattern, token, callback) {
-  onlineBranchExist(pattern, token, function(err, res) {
-    if (err || res === false) {
-      onlineTagExist(pattern, token, callback);
-      return;
-    }
-    callback(null, res);
-  });
-}
-
-onlineExist.tag = onlineTagExist;
-onlineExist.branch = onlineBranchExist
-
-function onlineBranchExist(pattern, token, callback) {
-  core('branches', pattern, token, callback);
-}
-
-function onlineTagExist(pattern, token, callback) {
-  core('tags', pattern, token, callback);
-}
-
-function core(type, pattern, token, callback) {
-  if (!pattern) {
-    errs.error('should have `pattern` and be string');
-  }
-
-  if (!token) {
-    errs.error('should give Github Personal Access Token');
-  }
-
-  if (token !== true && typeof token !== 'string') {
-    errs.type('expect `token` be string');
-  }
-
-  if (!callback) {
-    errs.error('should have `callback` and be function');
-  }
-
-  if (typeof callback !== 'function') {
-    errs.type('expect `callback` be function');
-  }
-
-  if (typeof pattern !== 'string') {
-    errs.type('expect `pattern` be string', callback);
-    return;
-  }
-
-  if (!stringify.regex().test(pattern)) {
-    errs.error('expect `pattern` be `user/repo#branch`', callback);
-    return;
-  }
-
-  var opts = token === true ? undefined : {
-    headers: {
-      'Authorization': 'token ' + token
-    }
-  };
-  var parse = stringify.parse(pattern);
-
-  var url = fmt('%s/%s/%s/%s', endpoint, parse.user, parse.repo, type);
-  got.get(url, opts, function(err, res) {
+  var refs = 'refs/heads/' + cache.branch;
+  request(refs, opts, function cb(err, res) {
     if (err) {
       callback(err);
       return;
     }
-    var data = JSON.parse(res).map(function(row) {
-      return row.name;
-    }).filter(function(name) {
-      return name === parse.branch;
-    });
-    callback(null, data.length === 1 ? true : false);
+    if (res === false) {
+      refs = 'refs/tags/' + cache.branch;
+      request(refs, opts, callback);
+      return;
+    }
+    callback(null, true);
   });
 }
+
+function checkHeadsOnline(pattern, opts, callback) {
+  var args = verify(pattern, opts, callback);
+  var refs = 'refs/heads/' + cache.branch;
+  request(refs, args.opts, args.callback);
+}
+
+function checkTagsOnline(pattern, opts, callback) {
+  var args = verify(pattern, opts, callback);
+  var refs = 'refs/tags/' + cache.branch;
+  request(refs, args.opts, args.callback);
+}
+
+function verify(pattern, opts, callback) {
+  if (typeof opts === 'function') {
+    callback = opts;
+    opts = {};
+  }
+  if (typeof callback !== 'function') {
+    errs.type('expect `callback` to be function');
+  }
+  if (typeof pattern !== 'string') {
+    errs.type('expect `pattern` to be string');
+    return;
+  }
+  if (!regex.test(pattern)) {
+    errs.error('expect `pattern` to be `user/repo#branch`');
+    return;
+  }
+  if (!isObject(opts)) {
+    errs.type('expect `opts` to be object');
+  }
+
+  opts = typeof opts.token === 'string' ? {
+    headers: {
+      Authorization: 'token ' + opts.token
+    }
+  } : undefined;
+
+  memo(regex.exec(pattern));
+
+  if (!cache.branch) {
+    errs.error('should give a branch or tag in `pattern`');
+  }
+
+  return {
+    opts: opts,
+    callback: callback
+  }
+}
+
+function memo(match) {
+  cache = {
+    user: match[1],
+    repo: match[2],
+    branch: match[3]
+  };
+}
+
+function request(refs, opts, callback) {
+  var url = fmt(format, endpoint, cache.user, cache.repo, refs);
+
+  got.get(url, opts, function(err, res) {
+    if (err && err.code !== 404) {
+      callback(err);
+      return;
+    }
+
+    res = res ? JSON.parse(res) : {};
+    if (res.ref === refs) {
+      callback(null, true);
+      return;
+    }
+
+    callback(null, false);
+  });
+}
+
+/**
+ * Expose package
+ */
+
+module.exports = onlineExist;
+onlineExist.branch = exports.branch = checkHeadsOnline;
+onlineExist.tag = exports.tag = checkTagsOnline;
