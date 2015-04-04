@@ -86,6 +86,12 @@ onlineExist.tag('hybridables/handle-arguments#v2.0.0', function(err, res) {
 ```
 
 
+## Related
+- [is-missing](https://github.com/tunnckoCore/is-missing): Check that given `name` or `user/repo` exists in npm registry or in github as organization/user repository.
+- [github-generate-token](https://github.com/tunnckoCore/github-generate-token): Generating Github Personal Access Token using Basic Auth username:password
+- [gitclone](https://github.com/tunnckoCore/gitclone): Clone a Github repository with only `username/repo`. 
+
+
 ## Author
 **Charlike Mike Reagent**
 + [gratipay/tunnckoCore][author-gratipay]
