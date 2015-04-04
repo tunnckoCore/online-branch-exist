@@ -39,6 +39,14 @@ test('online-branch-exist:', function() {
     });
     test('Error if not valid `pattern` given', function(done) {
       function fixture() {
+        onlineExist('foobar', function() {});
+      }
+      assert.throws(fixture, Error);
+      assert.throws(fixture, /expect `pattern` to be `user\/repo\#branch`/);
+      done();
+    });
+    test('Error if valid `pattern`, but no branch/tag given', function(done) {
+      function fixture() {
         onlineExist('foo/bar', function() {});
       }
       assert.throws(fixture, Error);
