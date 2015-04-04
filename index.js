@@ -18,6 +18,15 @@ var endpoint = 'https://api.github.com/repos/';
 var format = '%s%s/%s/git/%s';
 var cache = {};
 
+/**
+ * Check using `user/repo#branch` if tag or branch exists.
+ *
+ * @name onlineExist
+ * @param  {String}   `pattern`
+ * @param  {Object}   `opts`
+ * @param  {Function} `callback`
+ * @api public
+ */
 function onlineExist(pattern, opts, callback) {
   var args = verify(pattern, opts, callback);
   opts = args.opts;
@@ -38,18 +47,45 @@ function onlineExist(pattern, opts, callback) {
   });
 }
 
+/**
+ * Send request to the Github API for `refs/heads`.
+ *
+ * @name .branch
+ * @param  {String}   `pattern`
+ * @param  {Object}   `opts`
+ * @param  {Function} `callback`
+ * @api public
+ */
 function checkHeadsOnline(pattern, opts, callback) {
   var args = verify(pattern, opts, callback);
   var refs = 'refs/heads/' + cache.branch;
   request(refs, args.opts, args.callback);
 }
 
+/**
+ * Send request to the Github API for `refs/tags`.
+ *
+ * @name .tags
+ * @param  {String}   `pattern`
+ * @param  {Object}   `opts`
+ * @param  {Function} `callback`
+ * @api public
+ */
 function checkTagsOnline(pattern, opts, callback) {
   var args = verify(pattern, opts, callback);
   var refs = 'refs/tags/' + cache.branch;
   request(refs, args.opts, args.callback);
 }
 
+/**
+ * Verify the given arguments.
+ *
+ * @param  {String}   `pattern`
+ * @param  {Object}   `opts`
+ * @param  {Function} `callback`
+ * @return {Object}
+ * @api private
+ */
 function verify(pattern, opts, callback) {
   if (typeof opts === 'function') {
     callback = opts;
@@ -60,11 +96,9 @@ function verify(pattern, opts, callback) {
   }
   if (typeof pattern !== 'string') {
     errs.type('expect `pattern` to be string');
-    return;
   }
   if (!regex.test(pattern)) {
     errs.error('expect `pattern` to be `user/repo#branch`');
-    return;
   }
   if (!isObject(opts)) {
     errs.type('expect `opts` to be object');
@@ -88,6 +122,12 @@ function verify(pattern, opts, callback) {
   }
 }
 
+/**
+ * Write regex parts to global cache.
+ *
+ * @param  {Array} `match`
+ * @api private
+ */
 function memo(match) {
   cache = {
     user: match[1],
@@ -96,6 +136,15 @@ function memo(match) {
   };
 }
 
+/**
+ * Request the Github API to check for branch/tag
+ * in `refs/heads` and `refs/tags`.
+ *
+ * @param  {String}   `refs`
+ * @param  {String}   `opts`
+ * @param  {Function} `callback`
+ * @api private
+ */
 function request(refs, opts, callback) {
   var url = fmt(format, endpoint, cache.user, cache.repo, refs);
 
@@ -116,7 +165,7 @@ function request(refs, opts, callback) {
 }
 
 /**
- * Expose package
+ * Expose `onlineExist`
  */
 
 module.exports = onlineExist;

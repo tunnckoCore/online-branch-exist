@@ -1,7 +1,7 @@
 {
   "name": "online-branch-exist",
   "version": "1.2.0",
-  "description": "Async (with callback api) check through github api if branch/tag/release exists in the `user/repo`, you can use `user/repo[#branch]` for the check",
+  "description": "Check that given branch/tag/release exist in github repo, using `user/repo#branch` pattern.",
   "scripts": {
     "lint": "jshint index.js && jscs index.js --reporter inline",
     "test": "node test.js",
@@ -51,7 +51,7 @@
   },
   "dependencies": {
     "github-short-url-regex": "~3.0.0",
-    "got": "~2.5.0",
+    "got": "^2.6.0",
     "handle-errors": "~1.0.0",
     "is-plain-object": "~1.0.0"
   },
