@@ -1,5 +1,10 @@
 
 
+## v2.0.2 / April 5, 2015
+- Release v2.0.2 / npm@v2.0.2
+- move to `assertit`
+- run npm-related(1)
+
 ## v2.0.1 / April 5, 2015
 - Release v2.0.1 / npm@v2.0.1
 - remove coveralls.yml
