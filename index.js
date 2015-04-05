@@ -34,10 +34,6 @@ function onlineExist(pattern, opts, callback) {
 
   var refs = 'refs/heads/' + cache.branch;
   request(refs, opts, function cb(err, res) {
-    if (err) {
-      callback(err);
-      return;
-    }
     if (res === false) {
       refs = 'refs/tags/' + cache.branch;
       request(refs, opts, callback);
@@ -138,7 +134,7 @@ function memo(match) {
 
 /**
  * Request the Github API to check for branch/tag
- * in `refs/heads` and `refs/tags`.
+ * in `refs/heads` and `refs/tags` endpoints.
  *
  * @param  {String}   `refs`
  * @param  {String}   `opts`
@@ -149,11 +145,6 @@ function request(refs, opts, callback) {
   var url = fmt(format, endpoint, cache.user, cache.repo, refs);
 
   got.get(url, opts, function(err, res) {
-    if (err && err.code !== 404) {
-      callback(err);
-      return;
-    }
-
     res = res ? JSON.parse(res) : {};
     if (res.ref === refs) {
       callback(null, true);
