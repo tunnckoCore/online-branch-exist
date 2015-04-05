@@ -84,6 +84,8 @@ onlineExist.tag('hybridables/handle-arguments#v2.0.0', function(err, res) {
 - [is-missing](https://github.com/tunnckoCore/is-missing): Check that given `name` or `user/repo` exists in npm registry or in github as organization/user repository.
 - [github-generate-token](https://github.com/tunnckoCore/github-generate-token): Generating Github Personal Access Token using Basic Auth username:password
 - [gitclone](https://github.com/tunnckoCore/gitclone): Clone a Github repository with only `username/repo`. 
+- [assertit](https://github.com/tunnckoCore/assertit): Thin sugar layer on top of `testit` framework, `is-kindof` and `assert`.
+- [jstransformer](https://github.com/jstransformers/jstransformer): Normalize the API of any jstransformer
 
 
 ## Author
