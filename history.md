@@ -1,5 +1,9 @@
 
 
+## v2.0.1 / April 5, 2015
+- Release v2.0.1 / npm@v2.0.1
+- remove coveralls.yml
+
 ## v2.0.0 / April 5, 2015
 - Release v2.0.0 / npm@v2.0.0
 - update logic, readme
