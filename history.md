@@ -1,5 +1,13 @@
 
 
+## v2.0.0 / April 5, 2015
+- Release v2.0.0 / npm@v2.0.0
+- update logic, readme
+- add one more test
+- add related section
+- run docks(1)
+- refactor - **breaking change:** give `opts.token` instead just token as second argument
+
 ## v1.2.0 / February 27, 2015
 - Release v1.2.0 / npm@v1.2.0
 - minimize travis builds, cuz the rate limiting
