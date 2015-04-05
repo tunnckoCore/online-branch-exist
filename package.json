@@ -56,7 +56,7 @@
     "is-plain-object": "~1.0.0"
   },
   "devDependencies": {
-    "istanbul-harmony": "~0.3.1",
-    "testit": "~2.0.2"
+    "assertit": "^0.1.0",
+    "istanbul-harmony": "~0.3.1"
   }
 }
